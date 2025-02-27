@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Température et Humidité</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #data {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Température et Humidité</h1>
+    <div id="data">Chargement des données...</div>
+
+    <script>
+        async function fetchData() {
+            try {
+                let response = await fetch("http://172.20.10.4:8000/api/donnees-capteur");
+                let data = await response.json();
+
+                if (data.length > 0) {
+                    let lastEntry = data[data.length - 1]; // Prend la dernière mesure
+                    document.getElementById("data").innerHTML = `
+                        Température : <strong>${lastEntry.temperature}°C</strong> <br>
+                        Humidité : <strong>${lastEntry.humidite}%</strong> <br>
+                        Dernière mise à jour : ${new Date(lastEntry.created_at).toLocaleString()}
+                    `;
+                } else {
+                    document.getElementById("data").innerHTML = "Aucune donnée disponible.";
+                }
+            } catch (error) {
+                document.getElementById("data").innerHTML = "Erreur de connexion à l'API.";
+                console.error("Erreur :", error);
+            }
+        }
+
+        // Charger les données au démarrage
+        fetchData();
+
+        // Rafraîchir toutes les 5 secondes
+        setInterval(fetchData, 5000);
+    </script>
+
+</body>
+</html>
