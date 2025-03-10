@@ -76,9 +76,9 @@ header{
 }
 
 .btn:hover{
-    /*background-color: #6da6cd;
+    background-color: #6da6cd;
     border: none;
-     transform: rotate(7deg); */
+     transform: rotate(7deg);
     border-radius: 30px;
 }
 
@@ -123,6 +123,16 @@ header{
     justify-content: center;
     align-items: center;
 }
+
+
+ #chart-container {
+     width: 80%;  /* Largeur à 80% de la page */
+     max-width: 800px; /* Limite à 800px */
+     height: 400px; /* Fixe la hauteur à 400px */
+     margin: auto; /* Centre le graphique */
+ }
+
+
 
 
 

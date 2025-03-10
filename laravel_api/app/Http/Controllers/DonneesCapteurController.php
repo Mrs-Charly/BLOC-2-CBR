@@ -20,8 +20,14 @@ class DonneesCapteurController extends Controller
         ]);
     }
 
-    public function index()
+    public function getChartData()
     {
-        return response()->json(DonneesCapteur::all(), 200);
-    }
-}
+        $data = DonneesCapteur::orderBy('created_at', 'desc')->take(120)->get();
+
+        return response()->json([
+            'labels' => $data->pluck('created_at')->map(fn($date) => $date->format('Y-m-d H:i')),
+            'temperature' => $data->pluck('temperature'),
+            'humidite' => $data->pluck('humidite')
+        ]);
+    }}
+

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns="http://www.w3.org/1999/html">
-
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Station météo CBR</title>
     <link rel="stylesheet" href="styles/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphique Température & Humidité</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/db80a22693.js" crossorigin="anonymous"></script>
-    <script src="js/app.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 </head>
 
 <header>
@@ -14,6 +16,7 @@
 
         <ul class="menu">
             <li><a href="index.html">Accueil</a></li>
+            <li><a href="historique.html">Historique</a></li>
             <li><a href="graphique.html">Graphique</a></li>
             <li><a href="carte.html">Carte</a></li>
         </ul>
@@ -27,31 +30,63 @@
     </nav>
 </header>
 
-<div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <body>
-    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+<body>
 
-    <script>
-        const xValues =;
 
-        new Chart("myChart", {
-            type: "line",
-            data: {
-                labels: xValues,
-                datasets: [{
-                    data: [],
-                    borderColor: "red",
-                    fill: false
-                }, {
-                    data: [],
-                    borderColor: "blue",
-                    fill: false
-            },
-            options: {
-                legend: {display: false}
-            }
-        });
-    </script>
-
+<div id="chart-container">
+    <canvas id="temperatureChart"></canvas>
 </div>
+
+<script>
+    async function fetchChartData() {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/chart-data"); // URL Laravel API
+            const data = await response.json();
+
+            const ctx = document.getElementById('temperatureChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels.reverse(), // Date et heure
+                    datasets: [
+                        {
+                            label: 'Température (°C)',
+                            data: data.temperature.reverse(),
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            fill: false
+                        },
+                        {
+                            label: 'Humidité (%)',
+                            data: data.humidite.reverse(),
+                            borderColor: 'blue',
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Date et Heure' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Valeurs' },
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Erreur lors de la récupération des données :", error);
+        }
+    }
+
+    fetchChartData();
+</script>
+
+</body>
+</html>
