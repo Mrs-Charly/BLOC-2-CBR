@@ -18,8 +18,6 @@ class DonneesCapteurController extends Controller
             'temperature' => $request->temperature,
             'humidite' => $request->humidite,
         ]);
-
-        return response()->json(['message' => 'Données enregistrées avec succès !', 'data' => $data], 201);
     }
 
     public function index()
