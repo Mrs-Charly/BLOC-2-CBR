@@ -76,9 +76,10 @@ header{
 }
 
 .btn:hover{
-    background-color: #6da6cd;
+    /*background-color: #6da6cd;
     border: none;
-    transform: rotate(7deg);
+     transform: rotate(7deg); */
+    border-radius: 30px;
 }
 
 .btn i{
@@ -117,21 +118,12 @@ header{
 }
 
 .article ul{
+    display: grid;
     font-size: 30px;
-    margin-bottom: 100px;
-}
-
-.température{
-    display: grid;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 15px;
 }
 
-.humidité{
-    width: 540px;
-    display: grid;
-    align-items: start;
-    justify-content: space-between;
-}
+
 
 
